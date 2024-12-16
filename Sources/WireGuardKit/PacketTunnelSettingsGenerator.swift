@@ -112,6 +112,7 @@ class PacketTunnelSettingsGenerator {
         } else {
             networkSettings.mtu = NSNumber(value: mtu)
         }
+        
 
         let (ipv4Addresses, ipv6Addresses) = addresses()
         let (ipv4IncludedRoutes, ipv6IncludedRoutes) = includedRoutes()
@@ -123,6 +124,11 @@ class PacketTunnelSettingsGenerator {
         let ipv6Settings = NEIPv6Settings(addresses: ipv6Addresses.map { $0.destinationAddress }, networkPrefixLengths: ipv6Addresses.map { $0.destinationNetworkPrefixLength })
         ipv6Settings.includedRoutes = ipv6IncludedRoutes
         networkSettings.ipv6Settings = ipv6Settings
+        
+        let dnsSettings = NEDNSSettings(servers: ["1.1.1.1", "8.8.8.8"]) // Ваши DNS-серверы
+        dnsSettings.matchDomains = ["https://www.ipaddress.my"] // Указывает, что этот DNS будет использоваться для всех доменов
+        networkSettings.dnsSettings = dnsSettings
+                
 
         return networkSettings
     }
